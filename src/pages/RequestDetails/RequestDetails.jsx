@@ -183,6 +183,12 @@ const RequestDetails = () => {
                 <div className="flex w-full bg-gray-200 gap-px">
                   {["Comments", "Volunteers", "Details"].map((newTab) => {
                     const isActive = newTab === tab;
+                    const tabLabel =
+                      newTab === "Comments"
+                        ? t("COMMENTS") || t("Comments") || "Comments"
+                        : newTab === "Volunteers"
+                          ? t("Volunteers") || t("VOLUNTEERS") || "Volunteers"
+                          : t("DETAILS") || t("Details") || "Details";
 
                     return (
                       <button
@@ -199,7 +205,7 @@ const RequestDetails = () => {
                             : "bg-gray-300 text-gray-800 border-b-2 border-transparent hover:bg-gray-200",
                         ].join(" ")}
                       >
-                        {t(newTab)}
+                        {tabLabel}
                       </button>
                     );
                   })}

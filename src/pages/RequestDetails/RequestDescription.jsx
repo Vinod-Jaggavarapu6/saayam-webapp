@@ -49,12 +49,34 @@ const RequestDescription = ({ requestData, setIsEditing }) => {
   const categoriesBundle = i18n.hasResourceBundle?.(lang, "categories")
     ? i18n.getResourceBundle(lang, "categories")
     : i18n.getResourceBundle("en", "categories");
+  const enumsBundle = i18n.hasResourceBundle?.(lang, "enums")
+    ? i18n.getResourceBundle(lang, "enums")
+    : i18n.getResourceBundle("en", "enums");
 
   const categoryLabel =
     findCategoryLabel(
       categoriesBundle?.REQUEST_CATEGORIES,
       requestData?.category,
     ) || requestData?.category;
+
+  const statusKey = String(requestData?.status || "").toUpperCase();
+  const priorityKey = String(requestData?.priority || "").toUpperCase();
+  const statusLabel =
+    enumsBundle?.requestStatus?.[statusKey] || t(statusKey) || statusKey;
+  const priorityLabel =
+    enumsBundle?.requestPriority?.[priorityKey] ||
+    t(priorityKey) ||
+    priorityKey;
+
+  const tabTitle = (label) => {
+    const tabMap = {
+      Comments: t("COMMENTS") || t("Comments") || "Comments",
+      Volunteers: t("VOLUNTEERS") || t("Volunteers") || "Volunteers",
+      Details: t("DETAILS") || t("Details") || "Details",
+    };
+
+    return tabMap[label] || label;
+  };
 
   const attributes = [
     {
@@ -95,13 +117,13 @@ const RequestDescription = ({ requestData, setIsEditing }) => {
 
             <li>
               <span className="bg-green-200 text-xs px-3 py-1 rounded-full">
-                {t(requestData.status)}
+                {statusLabel}
               </span>
             </li>
 
             <li className="flex items-center">
               <PiWarningDiamondFill className="mr-1 text-red-500" />
-              <span className="font-bold">{t(requestData.priority)}</span>
+              <span className="font-bold">{priorityLabel}</span>
             </li>
 
             {/* Buttons */}
@@ -110,14 +132,16 @@ const RequestDescription = ({ requestData, setIsEditing }) => {
                 className="bg-blue-500 text-white text-sm px-6 py-2 rounded-lg hover:bg-blue-600"
                 onClick={() => console.log("Change Volunteer clicked")}
               >
-                {t("Change Volunteer")}
+                {t("CHANGE_VOLUNTEER") ||
+                  t("Change Volunteer") ||
+                  "Change Volunteer"}
               </button>
 
               <button
                 className="bg-red-500 text-white text-sm px-6 py-2 rounded-lg hover:bg-red-600"
                 onClick={() => setDeleteDialogOpen(true)}
               >
-                {t("Delete")}
+                {t("DELETE") || t("Delete") || "Delete"}
               </button>
 
               <button
@@ -139,22 +163,22 @@ const RequestDescription = ({ requestData, setIsEditing }) => {
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
       >
-        <DialogTitle>{t("Delete")}</DialogTitle>
+        <DialogTitle>{t("DELETE") || t("Delete") || "Delete"}</DialogTitle>
 
         <DialogContent>
-          <Typography>{t("Reason")}</Typography>
+          <Typography>{t("REASON") || t("Reason") || "Reason"}</Typography>
 
           <textarea
             value={deleteReason}
             onChange={(e) => setDeleteReason(e.target.value)}
             className="border p-2 w-full mt-3 rounded-lg min-h-[100px]"
-            placeholder={t("Reason")}
+            placeholder={t("REASON") || t("Reason") || "Reason"}
           />
         </DialogContent>
 
         <DialogActions>
           <Button onClick={() => setDeleteDialogOpen(false)} variant="outlined">
-            {t("Cancel")}
+            {t("CANCEL") || t("Cancel") || "Cancel"}
           </Button>
 
           <Button
@@ -163,7 +187,7 @@ const RequestDescription = ({ requestData, setIsEditing }) => {
             variant="contained"
             disabled={!deleteReason.trim()}
           >
-            {t("Delete")}
+            {t("DELETE") || t("Delete") || "Delete"}
           </Button>
         </DialogActions>
       </Dialog>
