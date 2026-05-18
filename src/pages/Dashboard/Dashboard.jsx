@@ -162,6 +162,17 @@ const Dashboard = ({ userRole }) => {
       return;
     }
 
+    const savedPrefs = localStorage.getItem("userPreferences");
+    if (savedPrefs) {
+      try {
+        const { defaultDashboard } = JSON.parse(savedPrefs);
+        if (defaultDashboard && accessible.includes(defaultDashboard)) {
+          setSelectedDashboard(defaultDashboard);
+          return;
+        }
+      } catch {}
+    }
+
     const storedDashboard = localStorage.getItem("lastDashboardSelected");
     if (storedDashboard && accessible.includes(storedDashboard)) {
       setSelectedDashboard(storedDashboard);

@@ -6,6 +6,7 @@ import Select from "react-select";
 import { updateUserProfileSuccess } from "../../redux/features/authentication/authSlice";
 import { changeUiLanguage } from "../../common/i18n/utils";
 import languagesData from "../../common/i18n/languagesData";
+import { DASHBOARDS } from "../../utils/rbac";
 
 // Timezone utility function (same as Availability page)
 const getTimezoneDetails = (timezoneValue, locale = "en-US") => {
@@ -63,11 +64,11 @@ const getTimezoneDetails = (timezoneValue, locale = "en-US") => {
 function Preferences({ setHasUnsavedChanges }) {
   const { t, i18n } = useTranslation("profile");
   const dashboardOptions = [
-    { value: "super-admin", label: t("SUPER_ADMIN_DASHBOARD") },
-    { value: "admin", label: t("ADMIN_DASHBOARD") },
-    { value: "steward", label: t("STEWARD_DASHBOARD") },
-    { value: "volunteer", label: t("VOLUNTEER_DASHBOARD") },
-    { value: "beneficiary", label: t("BENEFICIARY_DASHBOARD") },
+    { value: DASHBOARDS.SUPER_ADMIN, label: t("SUPER_ADMIN_DASHBOARD") },
+    { value: DASHBOARDS.ADMIN, label: t("ADMIN_DASHBOARD") },
+    { value: DASHBOARDS.STEWARD, label: t("STEWARD_DASHBOARD") },
+    { value: DASHBOARDS.VOLUNTEER, label: t("VOLUNTEER_DASHBOARD") },
+    { value: DASHBOARDS.BENEFICIARY, label: t("BENEFICIARY_DASHBOARD") },
   ];
   // Build languages options directly from languagesData.js
   const languages = languagesData.map((lang) => ({
@@ -84,7 +85,7 @@ function Preferences({ setHasUnsavedChanges }) {
   const currentLocale = i18n.language || "en-US";
 
   const [preferencesInfo, setPreferencesInfo] = useState({
-    defaultDashboard: "beneficiary",
+    defaultDashboard: DASHBOARDS.BENEFICIARY,
     languagePreference1: "", // Using the same naming as PersonalInformation
     languagePreference2: "",
     languagePreference3: "",
